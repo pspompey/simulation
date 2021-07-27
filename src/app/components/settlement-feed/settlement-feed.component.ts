@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-settlement-feed',
@@ -28,13 +28,35 @@ export class SettlementFeedComponent implements OnInit {
   alpha:number = 8.505;   // Parámetro alpha de Burr
   k:number = 3.7347;      // Parámetro k de Burr
 
+  isSimulated:boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
-    this.simulation();
+    this.init();
   }
 
-  simulation(){
+  init(){
+    this.T = 0;           
+    this.TF = 108000;      
+    this.M = 0;            
+    this.RPP = 0;         
+    this.MYL = 0;          
+    this.MNL = 999999999; 
+    this.EG = true;     
+    this.STA = 0;         
+    this.ITA = 0;         
+    this.TMP = 0;  
+    this.PTP = 0;
+    this.isSimulated = false;
+  }
+
+  simulation(instancias: any, thl: any, tll: any){
+
+    this.CI = Number.parseInt(instancias);
+    this.THL = Number.parseInt(thl);
+    this.TLL = Number.parseInt(tll);
+    this.init();
 
     do{
       this.T++;
@@ -61,23 +83,11 @@ export class SettlementFeedComponent implements OnInit {
           this.EG = false;
           this.ITA = this.T;
         }else{
-          if(this.RPP < this.TLL && !this.EG){
-            this.EG = true;
-            this.STA += this.T - this.ITA;
-            if(this.T - this.ITA > this.TMP){
-              this.TMP = this.T - this.ITA;
-            }
-          }
+          this.onEG();
         }
       }else{
         this.RPP = 0;
-        if(this.RPP < this.TLL && !this.EG){
-          this.EG = true;
-          this.STA += this.T - this.ITA;
-          if(this.T - this.ITA > this.TMP){
-            this.TMP = this.T - this.ITA;
-          }
-        }
+        this.onEG();
       }
 
 
@@ -88,15 +98,23 @@ export class SettlementFeedComponent implements OnInit {
     }while(this.T < this.TF)
 
     if(!this.EG){
-      this.STA = this.T - this.ITA;
+      this.STA += this.T - this.ITA;
       this.TMP = this.T - this.ITA;
     }
 
     this.PTP = Number.parseFloat((this.STA*100/this.T).toFixed(2));
-    console.log(this.MYL);
-    console.log(this.MNL);
-    console.log(this.TMP);
-    console.log(this.STA*100/this.T);
+    this.isSimulated = true;
+  }
+
+
+  onEG() {
+    if (this.RPP < this.TLL && !this.EG) {
+      this.EG = true;
+      this.STA += this.T - this.ITA;
+      if (this.T - this.ITA > this.TMP) {
+        this.TMP = this.T - this.ITA;
+      }
+    }
   }
 
 }
