@@ -13,3 +13,19 @@
     justify-content: center;
     flex-direction: row;
 }
+
+.cardTitle{
+    display: flex;
+    justify-content: space-around;
+}
+
+.jumbotron {
+    box-shadow: none;
+    border-radius: 0.125rem;
+    background-color: #fff;
+}
+
+.col-btn{
+    display: flex;
+    justify-content: space-around;
+}

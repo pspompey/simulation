@@ -1,48 +1,63 @@
 <div class="jumbotron">
-    <!-- Material auto-sizing form -->
-    <form>
-        <!-- Grid row -->
-        <div class="form-row">
-            <!-- Grid column -->
-            <div class="col-auto">
-                <!-- Material input -->
-                <div class="md-form">
-                    <input mdbInput type="number" class="form-control" id="inlineFormInputMD" value={{CI}} #instancias>
-                    <label for="inlineFormInputMD">Cantidad Instancias</label>
-                </div>
-            </div>
-            <!-- Grid column -->
+    <mdb-card class="row w-100">
+        <!--Card content-->
+        <mdb-card-body>
 
-            <!-- Grid column -->
-            <div class="col-auto">
-                <!-- Material input -->
-                <div class="md-form">
-                    <input mdbInput type="number" class="form-control pl-0 rounded-0" id="inlineFormInputGroupMD"
-                    value={{THL}} #thl>
-                        <label for="inlineFormInputGroupMD">Threshold high lag</label>
-                </div>
-            </div>
-            <!-- Grid column -->
+            <!--Title-->
+            <mdb-card-title>
+                <h2 class="cardTitle">Variables de Control</h2>
+            </mdb-card-title>
+            <!-- Material auto-sizing form -->
+            <form>
+                <!-- Grid row -->
+                <div class="form-row">
+                    <!-- Grid column -->
+                    <div class="col-auto">
+                        <!-- Material input -->
+                        <div class="md-form">
+                            <input mdbInput type="number" class="form-control" id="inlineFormInputMD" value={{CI}}
+                                #instancias>
+                            <label for="inlineFormInputMD">Cantidad Instancias</label>
+                        </div>
+                    </div>
+                    <!-- Grid column -->
 
-            <!-- Grid column -->
-            <div class="col-auto">
-                <!-- Material input -->
-                <div class="md-form">
-                    <input mdbInput type="number" class="form-control pl-0 rounded-0" id="inlineFormInputGroupMD2"
-                    value={{TLL}} #tll>
-                        <label for="inlineFormInputGroupMD2">Threshold low lag</label>
-                </div>
-            </div>
-            <!-- Grid column -->
+                    <!-- Grid column -->
+                    <div class="col-auto">
+                        <!-- Material input -->
+                        <div class="md-form">
+                            <input mdbInput type="number" class="form-control pl-0 rounded-0"
+                                id="inlineFormInputGroupMD" value={{THL}} #thl>
+                            <label for="inlineFormInputGroupMD">Threshold high lag</label>
+                        </div>
+                    </div>
+                    <!-- Grid column -->
 
-            <!-- Grid column -->
-            <div class="col-auto">
-                <button type="submit" (click)="simulation(instancias.value, thl.value, tll.value)" mdbBtn color="primary" class="mb-0">Simular</button>
-            </div>
-            <!-- Grid column -->
-        </div>
-        <!-- Grid row -->
-    </form>
+                    <!-- Grid column -->
+                    <div class="col-auto">
+                        <!-- Material input -->
+                        <div class="md-form">
+                            <input mdbInput type="number" class="form-control pl-0 rounded-0"
+                                id="inlineFormInputGroupMD2" value={{TLL}} #tll>
+                            <label for="inlineFormInputGroupMD2">Threshold low lag</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid column -->
+                <div class="col-btn">
+                    <button type="submit" (click)="simulation(instancias.value, thl.value, tll.value)" mdbBtn
+                        color="primary" class="mb-0">Simular</button>
+                </div>
+                <!-- Grid row -->
+            </form>
+
+
+        </mdb-card-body>
+    </mdb-card>
+
+    <br>
+    <br>
     <!-- Material auto-sizing form -->
     <div class="row w-100">
         <div class="col-md-3">
