@@ -15,14 +15,14 @@ export class SettlementFeedComponent implements OnInit {
   RPP:number = 0;         // Registros que están a la espera de procesamiento
   MYL:number = 0;         // Mayor lag en la cola de movimientos 
   MNL:number = 999999999; // Menor lag en la cola de movimientos
-  RPM:number = 5000;      // Request Por Minuto
+  RPM:number = 3000;      // Request Por Minuto
   CI:number = 1;          // Cantidad de Instancias Disponibles
   EG:boolean = true;      // Estado del Generador
   STA:number = 0;         // Sumatoria Tiempo Apagado del Generador
   ITA:number = 0;         // Intervalo de Tiempo Apagado del Generador
   TMP:number = 0;         // Tiempo máximo que el generador estuvo pausado
-  THL:number = 600000000; // Threshold high lag 
-  TLL:number = 300000000; // Threshold low lag
+  THL:number = 2500; // Threshold high lag 
+  TLL:number = 1000; // Threshold low lag
   PTP:number = 0;         // Porcentaje de tiempo que los generadores estuvieron pausados
   mu:number = 7158.9;     // Parámetro mu de Gumbel Min
   sigma:number = 1035.7;  // Parámetro sigma de Gumbel Min
@@ -74,11 +74,14 @@ export class SettlementFeedComponent implements OnInit {
       let x = Math.random();
       if(this.DAY == 4 && this.M > 540){
         this.RPP += Math.trunc(Math.pow(Math.pow(1-x, -1/this.k)-1,1/this.alpha)*this.beta);
+        this.RPM = 50000;
       }else{
         if(this.M > 540){
           this.RPP += Math.trunc(-Math.log(-Math.log(x))*this.sigma + this.mu);
+          this.RPM = 50000;
         }else{
           this.RPP += Math.trunc(Math.pow(-Math.log(1-x), 1/this.alphaW)*this.betaW + this.omegaW);
+          this.RPM = 3000;
         }
       }
     
@@ -117,7 +120,7 @@ export class SettlementFeedComponent implements OnInit {
       this.TMP = this.T - this.ITA;
     }
 
-    this.PTP = Number.parseFloat((this.STA*100/this.T).toFixed(2));
+    this.PTP = parseInt((this.STA*100/this.T).toFixed(2));
     this.chartDatasets.push({data: this.data, label: 'Hola'})
     this.isSimulated = true;
   }
