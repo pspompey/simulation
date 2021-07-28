@@ -9,12 +9,13 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 export class SettlementFeedComponent implements OnInit {
 
   T:number = 0;           // Tiempo de simulación
-  TF:number = 108000;     // Tiempo final de la simulación
-  M:number = 0;           // Contador de Tiempo Auxiliar, indica el día L-M-X-J-V
+  TF:number = 172800;     // Tiempo final de la simulación
+  M:number = 0;           // Contador de Tiempo Auxiliar, indica la hora
+  DAY:number = 1;         // Contador de Tiempo Auxiliar, indica el día L-M-X-J-V
   RPP:number = 0;         // Registros que están a la espera de procesamiento
   MYL:number = 0;         // Mayor lag en la cola de movimientos 
   MNL:number = 999999999; // Menor lag en la cola de movimientos
-  RPM:number = 1000;      // Request Por Minuto
+  RPM:number = 5000;      // Request Por Minuto
   CI:number = 1;          // Cantidad de Instancias Disponibles
   EG:boolean = true;      // Estado del Generador
   STA:number = 0;         // Sumatoria Tiempo Apagado del Generador
@@ -28,9 +29,13 @@ export class SettlementFeedComponent implements OnInit {
   beta:number = 8142.1;   // Parámetro beta de Burr
   alpha:number = 8.505;   // Parámetro alpha de Burr
   k:number = 3.7347;      // Parámetro k de Burr
+  betaW:number = 1810.3;  // Parámetro beta de Weibull
+  alphaW:number = 1.3831; // Parámetro alpha de Weibull
+  omegaW:number = 832.84; // Parámetro omega de Weibull
 
   isSimulated:boolean = false;
-
+  data: Set<number> = new Set<number>();
+  public chartDatasets: Array<any> = [];
   constructor() { }
 
   ngOnInit(): void {
@@ -39,8 +44,9 @@ export class SettlementFeedComponent implements OnInit {
 
   init(){
     this.T = 0;           
-    this.TF = 108000;      
-    this.M = 0;            
+    this.TF = 172800;      
+    this.M = 0;
+    this.DAY = 1;                    
     this.RPP = 0;         
     this.MYL = 0;          
     this.MNL = 999999999; 
@@ -50,6 +56,8 @@ export class SettlementFeedComponent implements OnInit {
     this.TMP = 0;  
     this.PTP = 0;
     this.isSimulated = false;
+    this.chartDatasets = [];
+    this.data.clear();
   }
 
   simulation(instancias: any, thl: any, tll: any){
@@ -64,12 +72,16 @@ export class SettlementFeedComponent implements OnInit {
       this.M++;
 
       let x = Math.random();
-      if(this.M >= 2700 && this.M < 3600){
+      if(this.DAY == 4 && this.M > 540){
         this.RPP += Math.trunc(Math.pow(Math.pow(1-x, -1/this.k)-1,1/this.alpha)*this.beta);
       }else{
-        this.RPP += Math.trunc(-Math.log(-Math.log(x))*this.sigma + this.mu);
+        if(this.M > 540){
+          this.RPP += Math.trunc(-Math.log(-Math.log(x))*this.sigma + this.mu);
+        }else{
+          this.RPP += Math.trunc(Math.pow(-Math.log(1-x), 1/this.alphaW)*this.betaW + this.omegaW);
+        }
       }
-
+    
       if(this.RPP > this.MYL){
         this.MYL = this.RPP;
       }
@@ -91,9 +103,11 @@ export class SettlementFeedComponent implements OnInit {
         this.onEG();
       }
 
+      this.data.add(this.RPP);
 
-      if(this.M == 4500){
+      if(this.M == 1440){
         this.M = 0;
+        this.DAY = this.DAY == 5 ? 1: this.DAY+1;
       }
 
     }while(this.T < this.TF)
@@ -104,6 +118,7 @@ export class SettlementFeedComponent implements OnInit {
     }
 
     this.PTP = Number.parseFloat((this.STA*100/this.T).toFixed(2));
+    this.chartDatasets.push({data: this.data, label: 'Hola'})
     this.isSimulated = true;
   }
 
