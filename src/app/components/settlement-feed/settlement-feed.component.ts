@@ -9,7 +9,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 export class SettlementFeedComponent implements OnInit {
 
   T:number = 0;           // Tiempo de simulación
-  TF:number = 172800;     // Tiempo final de la simulación
+  TF:number = 525600;     // Tiempo final de la simulación
   M:number = 0;           // Contador de Tiempo Auxiliar, indica la hora
   DAY:number = 1;         // Contador de Tiempo Auxiliar, indica el día L-M-X-J-V
   RPP:number = 0;         // Registros que están a la espera de procesamiento
@@ -21,8 +21,8 @@ export class SettlementFeedComponent implements OnInit {
   STA:number = 0;         // Sumatoria Tiempo Apagado del Generador
   ITA:number = 0;         // Intervalo de Tiempo Apagado del Generador
   TMP:number = 0;         // Tiempo máximo que el generador estuvo pausado
-  THL:number = 2500; // Threshold high lag 
-  TLL:number = 1000; // Threshold low lag
+  THL:number = 2500;      // Threshold high lag 
+  TLL:number = 1000;      // Threshold low lag
   PTP:number = 0;         // Porcentaje de tiempo que los generadores estuvieron pausados
   mu:number = 7158.9;     // Parámetro mu de Gumbel Min
   sigma:number = 1035.7;  // Parámetro sigma de Gumbel Min
@@ -34,8 +34,29 @@ export class SettlementFeedComponent implements OnInit {
   omegaW:number = 832.84; // Parámetro omega de Weibull
 
   isSimulated:boolean = false;
-  data: Set<number> = new Set<number>();
-  public chartDatasets: Array<any> = [];
+  TMPData: number[] = [999999999,999999999,999999999,999999999,999999999];
+  chartDatasets: Array<any> = [];
+  chartDatasetsDoughnut: Array<any> = [];
+  chartLabels: Array<any> = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+  chartColors: Array<any> = [
+    {
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+      ],
+      borderWidth: 2,
+    }
+  ];
   constructor() { }
 
   ngOnInit(): void {
@@ -44,7 +65,6 @@ export class SettlementFeedComponent implements OnInit {
 
   init(){
     this.T = 0;           
-    this.TF = 172800;      
     this.M = 0;
     this.DAY = 1;                    
     this.RPP = 0;         
@@ -57,7 +77,8 @@ export class SettlementFeedComponent implements OnInit {
     this.PTP = 0;
     this.isSimulated = false;
     this.chartDatasets = [];
-    this.data.clear();
+    this.chartDatasetsDoughnut = [];
+    this.TMPData = [999999999,999999999,999999999,999999999,999999999];
   }
 
   simulation(instancias: any, thl: any, tll: any){
@@ -84,9 +105,13 @@ export class SettlementFeedComponent implements OnInit {
           this.RPM = 3000;
         }
       }
-    
+
       if(this.RPP > this.MYL){
         this.MYL = this.RPP;
+      }
+
+      if(this.RPP < this.TMPData[this.DAY-1]){
+        this.TMPData[this.DAY-1] = this.RPP;
       }
 
       if(this.RPP < this.MNL){
@@ -106,8 +131,6 @@ export class SettlementFeedComponent implements OnInit {
         this.onEG();
       }
 
-      this.data.add(this.RPP);
-
       if(this.M == 1440){
         this.M = 0;
         this.DAY = this.DAY == 5 ? 1: this.DAY+1;
@@ -120,8 +143,10 @@ export class SettlementFeedComponent implements OnInit {
       this.TMP = this.T - this.ITA;
     }
 
-    this.PTP = parseInt((this.STA*100/this.T).toFixed(2));
-    this.chartDatasets.push({data: this.data, label: 'Hola'})
+
+    this.PTP = Number.parseFloat((this.STA*100/this.T).toFixed(2));
+    this.chartDatasets.push({data: this.TMPData})
+    this.chartDatasetsDoughnut.push({data: [this.PTP, 100-this.PTP]});
     this.isSimulated = true;
   }
 

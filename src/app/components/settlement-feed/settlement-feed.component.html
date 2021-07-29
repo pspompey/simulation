@@ -113,4 +113,21 @@
             </div>
         </div>
     </div>
+
+    <br>
+    <br>
+    <div class="row">
+        <div class="chart" *ngIf="isSimulated">
+            <canvas mdbChart [chartType]="'bar'" [datasets]="chartDatasets" [labels]="chartLabels"
+                [colors]="chartColors">
+            </canvas>
+        </div>
+        <div sclass="chart" *ngIf="isSimulated">
+            <canvas mdbChart
+                [chartType]="'doughnut'"
+                [datasets]="chartDatasetsDoughnut">
+            </canvas>
+          </div>
+    </div>
+
 </div>
