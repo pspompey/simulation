@@ -5,11 +5,14 @@ import { FormsModule } from "@angular/forms"
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SettlementFeedComponent } from './components/settlement-feed/settlement-feed.component';
+import { SidebarComponent } from './components/sidebar/sidebar/sidebar.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    SettlementFeedComponent
+    SettlementFeedComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -17,7 +20,7 @@ import { SettlementFeedComponent } from './components/settlement-feed/settlement
     FormsModule,
     MDBBootstrapModule.forRoot()
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
