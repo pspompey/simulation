@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { SettlementFeedComponent } from './components/settlement-feed/settlement-feed.component';
 import { SidebarComponent } from './components/sidebar/sidebar/sidebar.component';
 import { DocumentsComponent } from './components/documents/documents.component';
+import { DrawComponent } from './components/draw/draw.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { DocumentsComponent } from './components/documents/documents.component';
     AppComponent,
     SettlementFeedComponent,
     SidebarComponent,
-    DocumentsComponent
+    DocumentsComponent,
+    DrawComponent
   ],
   imports: [
     BrowserModule,
