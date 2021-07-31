@@ -13,19 +13,19 @@
             <div class="sidebar-menu">
                 <ul>
                     <li>
-                        <a routerLink="">
+                        <a (click)="changeContainer('simulation')">
                             <i class="fas fa-tachometer-alt"></i>
                             <span>Simulación</span>
                         </a>
                     </li>
                     <li>
-                        <a routerLink="">
+                        <a (click)="changeContainer('doc')">
                             <i class="fas fa-file-alt"></i>
                             <span>Documentación</span>
                         </a>
                     </li>
                     <li>
-                        <a routerLink="">
+                        <a (click)="changeContainer('draw')">
                             <i class="fas fa-project-diagram"></i>
                             <span>Diagrama</span>
                         </a>
@@ -37,10 +37,15 @@
     </nav>
     <!-- sidebar-wrapper  -->
     <main class="page-content">
-        <div class="container-fluid">
+        <div *ngIf="container === 'simulation'" class="container-fluid">
             <app-settlement-feed></app-settlement-feed>
         </div>
-
+        <div *ngIf="container === 'doc'" class="container-fluid">
+            <app-documents></app-documents>
+        </div>
+        <div *ngIf="container === 'draw'" class="container-fluid">
+            <app-settlement-feed></app-settlement-feed>
+        </div>
     </main>
     <!-- page-content" -->
 </div>

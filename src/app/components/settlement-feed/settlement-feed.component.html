@@ -46,7 +46,7 @@
 
                 <!-- Grid column -->
                 <div class="col-btn">
-                    <button type="submit" (click)="simulation(instancias.value, thl.value, tll.value)" mdbBtn
+                    <button type="submit" [disabled]="loading" (click)="simulation(instancias.value, thl.value, tll.value)" mdbBtn
                         color="primary" class="mb-0">Simular</button>
                 </div>
                 <!-- Grid row -->

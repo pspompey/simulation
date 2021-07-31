@@ -33,6 +33,7 @@ export class SettlementFeedComponent implements OnInit {
   omegaW: number = 832.84; // Parámetro omega de Weibull
 
   isSimulated: boolean = false;
+  loading: boolean = false;
   MYLData: number[] = [0, 0, 0, 0, 0];
   MNLData: number[] = [999999999, 999999999, 999999999, 999999999, 999999999];
   TMPData: number[] = [0, 0, 0, 0, 0];
@@ -132,6 +133,7 @@ export class SettlementFeedComponent implements OnInit {
   }
 
   simulation(instancias: any, thl: any, tll: any) {
+    this.loading = true;
 
     this.CI = Number.parseInt(instancias);
     this.THL = Number.parseInt(thl);
@@ -206,6 +208,7 @@ export class SettlementFeedComponent implements OnInit {
     this.chartDatasetsTMP.push({ data: this.TMPData, label: 'Tiempo Mayor Pausado' });
 
     this.isSimulated = true;
+    this.loading = false;
   }
 
 

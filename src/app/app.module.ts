@@ -6,13 +6,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SettlementFeedComponent } from './components/settlement-feed/settlement-feed.component';
 import { SidebarComponent } from './components/sidebar/sidebar/sidebar.component';
+import { DocumentsComponent } from './components/documents/documents.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SettlementFeedComponent,
-    SidebarComponent
+    SidebarComponent,
+    DocumentsComponent
   ],
   imports: [
     BrowserModule,
