@@ -12,8 +12,4 @@ export class DocumentsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  download(){
-    console.log('descargo');
-  }
-
 }
