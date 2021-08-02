@@ -14,7 +14,7 @@ export class SettlementFeedComponent implements OnInit {
   RPP: number = 0;         // Registros que están a la espera de procesamiento
   MYL: number = 0;         // Mayor lag en la cola de movimientos 
   MNL: number = 999999999; // Menor lag en la cola de movimientos
-  RPM: number = 750;      // Request Por Minuto
+  RPM: number = 750;       // Request Por Minuto
   CI: number = 4;          // Cantidad de Instancias Disponibles
   EG: boolean = true;      // Estado del Generador
   STA: number = 0;         // Sumatoria Tiempo Apagado del Generador
@@ -94,7 +94,7 @@ export class SettlementFeedComponent implements OnInit {
         'rgba(255, 206, 86, 0.2)',
         'rgba(255, 206, 86, 0.2)',
         'rgba(255, 206, 86, 0.2)',
-        'rgba(255, 206, 86, 0.2)', 
+        'rgba(255, 206, 86, 0.2)',
       ],
       borderColor: [
         'rgba(255, 206, 86, 1)',
@@ -144,17 +144,20 @@ export class SettlementFeedComponent implements OnInit {
       this.T++;
       this.M++;
 
+      if(this.M == 1){
+        this.RPM = 750
+      }
+      if(this.M == 541){
+        this.RPM = 12500
+      }
       let x = Math.random();
       if (this.DAY == 4 && this.M > 540) {
         this.RPP += Math.trunc(Math.pow(Math.pow(1 - x, -1 / this.k) - 1, 1 / this.alpha) * this.beta);
-        this.RPM = 12500;
       } else {
         if (this.M > 540) {
           this.RPP += Math.trunc(-Math.log(-Math.log(x)) * this.sigma + this.mu);
-          this.RPM = 12500;
         } else {
           this.RPP += Math.trunc(Math.pow(-Math.log(1 - x), 1 / this.alphaW) * this.betaW + this.omegaW);
-          this.RPM = 750;
         }
       }
 
@@ -219,8 +222,8 @@ export class SettlementFeedComponent implements OnInit {
       if (this.T - this.ITA > this.TMP) {
         this.TMP = this.T - this.ITA;
       }
-      if (this.T - this.ITA > this.TMPData[this.DAY-1]) {
-        this.TMPData[this.DAY-1] = this.T - this.ITA;
+      if (this.T - this.ITA > this.TMPData[this.DAY - 1]) {
+        this.TMPData[this.DAY - 1] = this.T - this.ITA;
       }
     }
   }
